@@ -1,6 +1,7 @@
 import { Suspense, useState } from 'react';
 import Banner from './Banner/Banner';
 import Products from './Products/Products';
+import { Bounce, ToastContainer } from 'react-toastify';
 
 const App = () => {
   let dataLoad = fetch('../data.json').then(res => res.json());
@@ -52,6 +53,19 @@ const App = () => {
           ></Products>
         </Suspense>
       </section>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 };

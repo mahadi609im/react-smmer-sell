@@ -1,4 +1,5 @@
 import React from 'react';
+import { Bounce, toast } from 'react-toastify';
 
 const Card = ({ product, handleCartItems }) => {
   const { title, price, image } = product;
@@ -8,6 +9,17 @@ const Card = ({ product, handleCartItems }) => {
         <button
           onClick={() => {
             handleCartItems(product);
+            toast.success('New Item added', {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+              transition: Bounce,
+            });
           }}
           className="bg-[#e527b240] w-[40px] h-[40px] absolute top-0 right-0 rounded-tr-lg cursor-pointer flex items-center justify-center"
         >
