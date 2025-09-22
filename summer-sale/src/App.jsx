@@ -35,7 +35,13 @@ const App = () => {
         id="card"
         className=" bg-[#f8f8f8] py-[56px] md:py-[74px] lg:py-[120px]"
       >
-        <Suspense fallback={<h3>Loading...</h3>}>
+        <Suspense
+          fallback={
+            <div className="text-center font-semibold text-[#E527B2]">
+              <span className="loading loading-spinner loading-xl"></span>
+            </div>
+          }
+        >
           <Products
             handleDiscount={handleDiscount}
             dataLoad={dataLoad}
