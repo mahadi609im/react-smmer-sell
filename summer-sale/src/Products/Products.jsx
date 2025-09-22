@@ -1,5 +1,6 @@
 import { use, useState, useEffect } from 'react';
 import Cards from './Cards';
+import congrats from '../../images/congo.png';
 
 const Products = ({
   dataLoad,
@@ -10,15 +11,22 @@ const Products = ({
 }) => {
   let useData = use(dataLoad);
   const [cartItems, setCartItems] = useState([]);
+  const [cartPurchase, setcartPurchase] = useState([]);
   const [cartPrice, setCartPrice] = useState(0);
   const [discountTk, setDiscountTk] = useState(0);
+  const [isApply, setApply] = useState(false);
   const [discountCartPrice, setDiscountCartPrice] = useState(0);
   let pay = cartPrice + discountCartPrice;
 
   const handleCartItems = product => {
-    let newCartItems = [...cartItems, product];
+    const newItem = {
+      ...product,
+      cartIdx: Math.random(),
+    };
+    let newCartItems = [...cartItems, newItem];
     setCartPrice(cartPrice + product.price);
     setCartItems(newCartItems);
+    setApply(false);
   };
 
   useEffect(() => {
@@ -44,7 +52,11 @@ const Products = ({
     inputCoupon.value = '';
     setDiscountCouponInput(false);
 
-    setDiscount(false);
+    let removeItem = document.getElementsByClassName('remove-btn');
+    for (let i of removeItem) {
+      i.setAttribute('disabled', true);
+      setApply(true);
+    }
   };
 
   const makePurchase = id => {
@@ -55,10 +67,30 @@ const Products = ({
   };
 
   const goHome = () => {
-    setCartItems([]);
+    let buyItems = document.getElementsByClassName('buy');
+    for (let i of buyItems) {
+      console.log(i.classList.add('text-green-500'));
+    }
+
+    let removeItem = document.getElementsByClassName('remove-btn');
+    for (let i of removeItem) {
+      i.setAttribute('disabled', true);
+      setApply(true);
+    }
+
     setCartPrice(0);
     setDiscountCartPrice(0);
     setDiscountTk(0);
+  };
+
+  const handleRemoveItems = cartId => {
+    const updatedCart = cartItems.filter(item => item.cartIdx !== cartId);
+    if (!isApply) {
+      const findItem = cartItems.find(item => item.cartIdx == cartId);
+      let findPrice = findItem.price;
+      setCartPrice(cartPrice - findPrice);
+      setCartItems(updatedCart);
+    }
   };
 
   return (
@@ -110,17 +142,28 @@ const Products = ({
         </div>
         <div className="bg-[#FFFFFF] p-6 rounded-lg shadow-sm">
           <div id="cart-items">
-            <ul className="space-y-2">
-              <h3 className="work-font text-lg md:text-xl text-[#111111] font-bold mb-3">
+            <ul>
+              <h3
+                id="items"
+                className="work-font text-lg md:text-xl text-[#111111] font-bold mb-3"
+              >
                 Items: <span>{cartItems.length}</span>
               </h3>
               {cartItems.length > 0 ? (
                 cartItems.map((item, idx) => (
                   <li
                     key={idx}
-                    className="work-font text-lg md:text-xl text-[#111111] font-medium"
+                    className="work-font text-lg md:text-xl text-[#111111] font-medium flex justify-between items-center hover:shadow-lg transition-all p-3 buy"
                   >
-                    {idx + 1}. {item.title}
+                    <p>
+                      {idx + 1}. {item.title}
+                    </p>{' '}
+                    <button
+                      onClick={() => handleRemoveItems(item.cartIdx)}
+                      className="text-sm hover:scale-130 transition-all cursor-pointer w-[24px] h-[24px] flex justify-center items-center text-[#E527B2] disabled:text-gray-300 disabled:scale-100 disabled:cursor-not-allowed remove-btn"
+                    >
+                      <i className="bx  bx-x font-bold text-2xl"></i>
+                    </button>
                   </li>
                 ))
               ) : (
@@ -157,7 +200,7 @@ const Products = ({
               </span>
             </p>
             <p className="font-medium text-[#111111] work-font text-lg md:text-xl">
-              Pay:
+              Pay: &nbsp;
               <span
                 id="total"
                 className="font-medium text-[#11111180] work-font text-lg md:text-xl"
@@ -187,7 +230,7 @@ const Products = ({
           <form method="dialog">
             <button className="bg-[#e527b240] w-[48px] h-[48px] absolute top-0 right-0 rounded-tr-lg cursor-pointer flex items-center justify-center">
               <i
-                class="bx  bx-x font-bold text-2xl"
+                className="bx  bx-x font-bold text-2xl"
                 style={{ color: '#E527B2' }}
               ></i>
             </button>
@@ -195,7 +238,7 @@ const Products = ({
           <div className=" m-4 flex flex-col justify-center items-center">
             <img
               className="max-w-[160px] max-h-[160px] w-full h-full"
-              src="../images/congo.png"
+              src={congrats}
               alt=""
             />
             <h2 className="work-font font-bold text-[26px] md:text-[32px] lg:text-[48px] text-[#111111]">

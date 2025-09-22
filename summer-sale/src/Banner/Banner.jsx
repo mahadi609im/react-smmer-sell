@@ -1,3 +1,5 @@
+import summer from '../../images/summer1.png';
+
 const Banner = ({ discount, handleDiscountCoupon }) => {
   return (
     <div className="flex flex-col-reverse md:flex-row justify-between items-center container mx-auto px-[5%] md:px-0">
@@ -34,7 +36,7 @@ const Banner = ({ discount, handleDiscountCoupon }) => {
         </div>
       </div>
       <div className="max-w-3/5 md:max-w-1/2 w-full h-full">
-        <img className="w-full" src="../images/summer 1.png" alt="" />
+        <img className="w-full" src={summer} alt="" />
       </div>
     </div>
   );
