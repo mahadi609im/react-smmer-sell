@@ -11,7 +11,6 @@ const Products = ({
 }) => {
   let useData = use(dataLoad);
   const [cartItems, setCartItems] = useState([]);
-  const [cartPurchase, setcartPurchase] = useState([]);
   const [cartPrice, setCartPrice] = useState(0);
   const [discountTk, setDiscountTk] = useState(0);
   const [isApply, setApply] = useState(false);
@@ -84,12 +83,15 @@ const Products = ({
   };
 
   const handleRemoveItems = cartId => {
-    const updatedCart = cartItems.filter(item => item.cartIdx !== cartId);
-    if (!isApply) {
-      const findItem = cartItems.find(item => item.cartIdx == cartId);
-      let findPrice = findItem.price;
-      setCartPrice(cartPrice - findPrice);
-      setCartItems(updatedCart);
+    let confirmation = confirm('Are you sure to remove this item?');
+    if (confirmation) {
+      const updatedCart = cartItems.filter(item => item.cartIdx !== cartId);
+      if (!isApply) {
+        const findItem = cartItems.find(item => item.cartIdx == cartId);
+        let findPrice = findItem.price;
+        setCartPrice(cartPrice - findPrice);
+        setCartItems(updatedCart);
+      }
     }
   };
 

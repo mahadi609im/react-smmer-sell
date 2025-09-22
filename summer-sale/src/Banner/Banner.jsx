@@ -1,6 +1,12 @@
+import { useEffect } from 'react';
 import summer from '../../images/summer1.png';
 
 const Banner = ({ discount, handleDiscountCoupon }) => {
+  useEffect(() => {
+    if (discount) {
+      alert('You have to discount 20%');
+    }
+  }, [discount]);
   return (
     <div className="flex flex-col-reverse md:flex-row justify-between items-center container mx-auto px-[5%] md:px-0">
       <div className="max-w-11/12 md:max-w-1/2 w-full text-center">
